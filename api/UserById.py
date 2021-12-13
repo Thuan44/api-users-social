@@ -1,4 +1,5 @@
 from flask_restful import Resource
+from flask import request
 import logging as logger
 from database.database import conn
 
@@ -25,10 +26,15 @@ class UserById(Resource):
     #     }, 200
 
     def put(self, userId):
-        logger.debug("Inside put method of user by id")
-        return {
-            "message": "Inside put method of user by id. User ID = {}".format(userId)
-        }, 200
+        cur = conn.cursor()
+        sql = "UPDATE users SET user_name = %s, user_password = %s, user_email = %s WHERE user_id = %s"
+        userName = request.form["userName"]
+        userPassword = request.form["userPassword"]
+        userEmail = request.form["userEmail"]
+        cur.execute(sql, (userName, userPassword, userEmail, userId))
+        conn.commit()
+        cur.close()
+        return {"message": "User updated successfully"}, 200
 
     def delete(self, userId):
         logger.debug("Inside delete method of user by id")
