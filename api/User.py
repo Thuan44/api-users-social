@@ -1,4 +1,5 @@
-from flask_restful import Resource
+from flask_restful import Resource, reqparse
+from flask import request
 import logging as logger
 from database.database import conn
 
@@ -22,8 +23,15 @@ class User(Resource):
         return users, 200
 
     def post(self):
-        logger.debug("Inside post method")
-        return {"message": "Inside post method"}, 200
+        cur = conn.cursor()
+        sql = "INSERT INTO users (user_name, user_password, user_email) VALUES (%s, %s, %s)"
+        userName = request.form["userName"]
+        userPassword = request.form["userPassword"]
+        userEmail = request.form["userEmail"]
+        cur.execute(sql, (userName, userPassword, userEmail))
+        conn.commit()
+        cur.close()
+        return {"message": "User added successfully"}, 201
 
     # def put(self):
     #     logger.debug("Inside put method")
