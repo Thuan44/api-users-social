@@ -19,12 +19,6 @@ class UserById(Resource):
         cur.close()
         return user, 200
 
-    # def post(self, userId):
-    #     logger.debug("Inside post method of user by id")
-    #     return {
-    #         "message": "Inside post method of user by id. User ID = {}".format(userId)
-    #     }, 200
-
     def put(self, userId):
         cur = conn.cursor()
         sql = "UPDATE users SET user_name = %s, user_password = %s, user_email = %s WHERE user_id = %s"
@@ -37,7 +31,9 @@ class UserById(Resource):
         return {"message": "User updated successfully"}, 200
 
     def delete(self, userId):
-        logger.debug("Inside delete method of user by id")
-        return {
-            "message": "Inside delete method of user by id. User ID = {}".format(userId)
-        }, 200
+        cur = conn.cursor()
+        sql = "DELETE FROM users WHERE user_id = %s"
+        cur.execute(sql, format(userId))
+        conn.commit()
+        cur.close()
+        return {"message": "User deleted successfully"}, 200

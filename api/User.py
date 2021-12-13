@@ -32,11 +32,3 @@ class User(Resource):
         conn.commit()
         cur.close()
         return {"message": "User added successfully"}, 201
-
-    # def put(self):
-    #     logger.debug("Inside put method")
-    #     return {"message": "Inside put method"}, 200
-
-    # def delete(self):
-    #     logger.debug("Inside delete method")
-    #     return {"message": "Inside delete method"}, 200
