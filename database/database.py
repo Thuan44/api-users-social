@@ -1,17 +1,10 @@
 import psycopg2
 
 # Connect to your postgres DB
-conn = psycopg2.connect(
-    host="localhost", database="api_users_social", user="postgres", password=""
-)
+try:
+    conn = psycopg2.connect(
+        host="localhost", database="api_users_social", user="postgres", password=""
+    )
 
-# cur = conn.cursor()
-
-# cur.execute("SELECT * FROM users;")
-# print(cur.fetchall())
-
-# conn.commit()
-
-
-# Close the connection
-# conn.close()
+except (Exception, psycopg2.Error) as error:
+    print("Error while fetching data from PostgreSQL", error)
